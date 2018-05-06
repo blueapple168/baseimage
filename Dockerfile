@@ -2,7 +2,7 @@ FROM alpine:latest
 
 MAINTAINER blueapple <blueapple1120@qq.com>
 
-ENV GLIBC_VERSION=2.27-r0
+ENV GLIBC_VERSION=2.26-r0
 
 # Install base packages,install openjdk8
 RUN apk update && apk --no-cache add tzdata ca-certificates wget curl bash tree tzdata openjdk8 && \
