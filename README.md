@@ -3,4 +3,4 @@ alpine：3.7
 
 openjdk：1.8  
 
-glibc：2.26-r0
+glibc：2.27-r0
