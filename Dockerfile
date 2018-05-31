@@ -17,6 +17,11 @@ RUN apk update \
     && apk add curl bash tree tzdata openjdk8 mkfontscale mkfontdir fontconfig \
     && cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && mkdir -p /usr/share/fonts \
+                /root/.local/share/fonts \
+                /root/.fonts \
+                /root/.cache/fontconfig \
+                /root/.fontconfig
+    
     && apk del tree \
                wget \
     && rm -rf /var/cache/apk/* \
