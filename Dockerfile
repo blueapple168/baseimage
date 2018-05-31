@@ -12,10 +12,11 @@ RUN apk add --no-cache --virtual .build-deps ca-certificates wget libgcc \
     && wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-i18n-${GLIBC_VERSION}.apk \
     && apk add --allow-untrusted glibc-bin-${GLIBC_VERSION}.apk glibc-${GLIBC_VERSION}.apk glibc-i18n-${GLIBC_VERSION}.apk
 
-# Install openjdk8
+# Install openjdk8 fontconfig
 RUN apk update \
-    && apk add curl bash tree tzdata openjdk8 \
+    && apk add curl bash tree tzdata openjdk8 mkfontscale mkfontdir fontconfig \
     && cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && mkdir -p /usr/share/fonts \
     && apk del tree \
                wget \
     && rm -rf /var/cache/apk/* \
