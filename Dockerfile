@@ -14,7 +14,7 @@ RUN apk add --no-cache --virtual .build-deps ca-certificates wget libgcc \
 
 # Install openjdk8 fontconfig
 RUN apk update \
-    && apk add curl bash tree tzdata openjdk8 mkfontscale mkfontdir fontconfig \
+    && apk add curl bash tree tzdata openjdk8 mkfontscale mkfontdir fontconfig git openssh \
     && cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && mkdir -p /usr/share/fonts \
                 /root/.local/share/fonts \
@@ -24,6 +24,7 @@ RUN apk update \
     && apk del tree \
                wget \
     && rm -rf /var/cache/apk/* \
+    && rm -rf /var/lib/apt/lists/* \
     && apk del .build-deps \
     && rm -rf /glibc-bin-${GLIBC_VERSION}.apk \
     && rm -rf /glibc-${GLIBC_VERSION}.apk \
