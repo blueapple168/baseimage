@@ -8,7 +8,7 @@ The Java base images come in different flavors:
 * Based on [Alpine Linux](https://www.alpinelinux.org/) (experimental)
 * [OpenJDK 8](http://openjdk.java.net/projects/jdk8/)
 * As JDK (Java Developer Toolkit) or as JRE (Java Runtime Environment)
-* [Glibc](https://github.com/sgerrand/alpine-pkg-glibc)
+* [Glibc](https://github.com/sgerrand/alpine-pkg-glibc) is the GNU C library as a Alpine Linux package to run binaries linked against glibc. This package utilizes a custom built glibc binary based on the vanilla glibc source. Built binary artifacts come from https://github.com/sgerrand/docker-glibc-builder.
 * Other component.Etc.. curl bash tree tzdata openjdk8 mkfontscale mkfontdir fontconfig git openssh wget libgcc sqlite sqlite-dev
 
 All images add the following features:
