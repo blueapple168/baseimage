@@ -23,3 +23,6 @@ All images add the following features:
 How to use these images and what environment variables can be used are
 described in the associated [README](java_auto_heap/README.md) files.
 
+Imags instructions
+* The blueapple/alpine_glibc_basicimage/java_base is base alpine.
+* The blueapple/alpine_glibc_basicimage/java_auto_heap the shell is base [fabric8/java-jboss-openjdk8-jdk](https://hub.docker.com/r/fabric8/java-jboss-openjdk8-jdk/)
