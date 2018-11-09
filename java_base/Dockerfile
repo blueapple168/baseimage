@@ -22,7 +22,7 @@ RUN apk add --update \
     libgcc \
     sqlite \
     sqlite-dev \
-    openjdk8=8.171.11-r0 \
+    openjdk8=8.181.13-r0 \
     bash \
     tree \
     tzdata \
