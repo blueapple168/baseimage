@@ -1,5 +1,8 @@
-# Docker for alpine_openjdk_glibc
-## Alpine Openjdk Base Images
+## Docker for alpine_openjdk_glibc
+# Supported tags and respective `Dockerfile` links
+-	[`base`, `latest` (*Alpine/openjdk8/glibc/Dockerfile*)](https://github.com/blueapple188/baseimage/blob/master/java_base/Dockerfile)
+-	[`auto_heap` (*Alpine/openjdk8/glibc/agent-bond/jmx_exporter/run-java.sh/Dockerfile*)](https://github.com/blueapple188/baseimage/blob/master/java_auto_heap/Dockerfile)
+# Alpine Openjdk Base Images
 
 This is a repository for Java Docker base images used in other projects.
 
