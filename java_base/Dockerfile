@@ -30,6 +30,8 @@ RUN apk add --update \
     mkfontdir \
     fontconfig \
     git \
+    dumb-init \
+    gosu \
     && rm /var/cache/apk/* \
     && echo "securerandom.source=file:/dev/urandom" >> /usr/lib/jvm/default-jvm/jre/lib/security/java.security \
 # Install glibc
