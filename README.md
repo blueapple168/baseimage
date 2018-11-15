@@ -22,9 +22,14 @@ All images add the following features:
 * A startup script [run-java.sh](https://github.com/fabric8io/run-java-sh) is
   included which transparently starts Java application provided as FAT-jar or
   traditionally with a bunch of jar dependencies.
+* [dumb-init](https://github.com/Yelp/dumb-init) is a simple process supervisor and init system designed to run as PID 1 inside minimal   container environments (such as Docker). It is deployed as a small, statically-linked binary written in C.
 
-How to use these images and what environment variables can be used are
-described in the associated [README](java_auto_heap/README.md) files.
+  Lightweight containers have popularized the idea of running a single process or service without normal init systems like systemd or     sysvinit. However, omitting an init system often leads to incorrect handling of processes and signals, and can result in problems such   as containers which can't be gracefully stopped, or leaking containers which should have been destroyed.
+
+  dumb-init enables you to simply prefix your command with dumb-init. It acts as PID 1 and immediately spawns your command as a child     process, taking care to properly handle and forward signals as they are received.
+* [gosu](https://github.com/tianon/gosu) is a simple tool grown out of the simple fact that su and sudo have very strange and often       annoying TTY and signal-forwarding behavior. They're also somewhat complex to setup and use (especially in the case of sudo), which     allows for a great deal of expressivity, but falls flat if all you need is "run this specific application as this specific user and     get out of the pipeline".
+
+The core of how gosu works is stolen directly from how Docker/libcontainer itself starts an application inside a container (and in fact, is using the /etc/passwd processing code directly from libcontainer's codebase).  
 
 Imags Instructions
 - The blueapple/alpine_glibc_basicimage/java_base is base alpine.
