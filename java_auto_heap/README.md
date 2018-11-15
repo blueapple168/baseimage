@@ -63,8 +63,14 @@ Some options for integration in various environments:
 * **AB_JMX_EXPORTER_OPTS** : Configuration to use for `jmx_exporter` (in the format `<port>:<path to config>`)
 * **AB_JMX_EXPORTER_PORT** : Port to use for the JMX Exporter. Default: `9779`
 * **AB_JMX_EXPORTER_CONFIG** : Path to configuration to use for `jmx_exporter`: Default: `/opt/agent-bond/jmx_exporter_config.json`
+#### dumb-init
+* **[dumb-init](https://github.com/Yelp/dumb-init) is a simple process supervisor and init system designed to run as PID 1 inside       minimal   container environments (such as Docker). It is deployed as a small, statically-linked binary written in C.
 
+    Lightweight containers have popularized the idea of running a single process or service without normal init systems like systemd or     sysvinit. However, omitting an init system often leads to incorrect handling of processes and signals, and can result in problems   such   as containers which can't be gracefully stopped, or leaking containers which should have been destroyed.
 
+    dumb-init enables you to simply prefix your command with dumb-init. It acts as PID 1 and immediately spawns your command as a child     process, taking care to properly handle and forward signals as they are received.
+#### gosu
+* **[gosu](https://github.com/tianon/gosu) is a simple tool grown out of the simple fact that su and sudo have very strange and often       annoying TTY and signal-forwarding behavior. They're also somewhat complex to setup and use (especially in the case of sudo), which     allows for a great deal of expressivity, but falls flat if all you need is "run this specific application as this specific user and     get out of the pipeline".
 
 ### Startup Script run-java.sh
 
