@@ -11,8 +11,18 @@ RUN mkdir -p /deployments
 
 # JAVA_APP_DIR is used by run-java.sh for finding the binaries
 ENV JAVA_APP_DIR=/deployments \
-    JAVA_MAJOR_VERSION=8
-
+    JAVA_MAJOR_VERSION=8 \    
+    GOSU_VERSION=1.11
+    
+RUN set -x \
+    && apk add --no-cache --virtual .gosu-deps \
+        dpkg \
+    && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
+    && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
+    && chmod +x /usr/local/bin/gosu \
+    && ln -s /usr/local/bin/gosu /usr/bin/gosu \
+    && gosu nobody true \
+    && apk del .gosu-deps dpkg
 # /dev/urandom is used as random source, which is perfectly safe
 # according to http://www.2uo.de/myths-about-urandom/
 RUN apk add --update \
@@ -31,7 +41,7 @@ RUN apk add --update \
     fontconfig \
     git \
     dumb-init \
-    gosu \    
+    su-exec \    
     && rm /var/cache/apk/* \
     && echo "securerandom.source=file:/dev/urandom" >> /usr/lib/jvm/default-jvm/jre/lib/security/java.security \
 # Install glibc sqlite
