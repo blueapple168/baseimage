@@ -85,5 +85,5 @@ EXPOSE 8778 9779
 COPY run-java.sh /deployments/
 RUN chmod 755 /deployments/run-java.sh
 
-
-CMD [ "/deployments/run-java.sh" ]
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+CMD [ "/bin/bash", "-c", "/deployments/run-java.sh" ]
