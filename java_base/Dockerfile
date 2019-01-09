@@ -4,6 +4,7 @@ FROM alpine:$ALPINE_VERSION as baseimage
 MAINTAINER blueapple <blueapple1120@qq.com>
 
 ENV GLIBC_VERSION=2.28-r0
+ENV LANG="zh_CN.UTF-8" 
 
 USER root
 
@@ -43,10 +44,10 @@ RUN apk add --update \
     git \
     dumb-init \
     su-exec \
-    && rm /var/cache/apk/* \
     && echo "securerandom.source=file:/dev/urandom" >> /usr/lib/jvm/default-jvm/jre/lib/security/java.security \
 # Install glibc
     && apk add --no-cache --virtual .build-deps \
+    && apk add wqy-zenhei --update-cache --repository http://nl.alpinelinux.org/alpine/edge/testing --allow-untrusted \
     && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
     && wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk \
     && wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-bin-${GLIBC_VERSION}.apk \
@@ -56,7 +57,10 @@ RUN apk add --update \
                                  glibc-${GLIBC_VERSION}.apk \
                                  glibc-i18n-${GLIBC_VERSION}.apk \
                                  glibc-dev-${GLIBC_VERSION}.apk \
-                                 
+    
+    && echo "export LC_ALL=zh_CN.UTF-8"  >>  /etc/profile \
+    && /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true \
+    && echo "export LANG=$LANG" > /etc/profile.d/locale.sh                             
     && rm -rf /glibc-bin-${GLIBC_VERSION}.apk \
     && rm -rf /glibc-${GLIBC_VERSION}.apk \
     && rm -rf /glibc-i18n-${GLIBC_VERSION}.apk \
