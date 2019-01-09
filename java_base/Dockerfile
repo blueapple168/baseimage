@@ -4,8 +4,7 @@ FROM alpine:$ALPINE_VERSION as baseimage
 MAINTAINER blueapple <blueapple1120@qq.com>
 
 ENV GLIBC_VERSION=2.28-r0
-ENV LANG="zh_CN.UTF-8" 
-
+ENV LANG=C.UTF-8
 USER root
 
 RUN mkdir -p /deployments
@@ -44,6 +43,7 @@ RUN apk add --update \
     git \
     dumb-init \
     su-exec \
+    && rm /var/cache/apk/* \
     && echo "securerandom.source=file:/dev/urandom" >> /usr/lib/jvm/default-jvm/jre/lib/security/java.security \
 # Install glibc
     && apk add --no-cache --virtual .build-deps \
@@ -56,10 +56,7 @@ RUN apk add --update \
                                  glibc-${GLIBC_VERSION}.apk \
                                  glibc-i18n-${GLIBC_VERSION}.apk \
                                  glibc-dev-${GLIBC_VERSION}.apk \
-    
-    && echo "export LC_ALL=zh_CN.UTF-8"  >>  /etc/profile \
-    && /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true \
-    && echo "export LANG=$LANG" > /etc/profile.d/locale.sh                             
+                                 
     && rm -rf /glibc-bin-${GLIBC_VERSION}.apk \
     && rm -rf /glibc-${GLIBC_VERSION}.apk \
     && rm -rf /glibc-i18n-${GLIBC_VERSION}.apk \
@@ -75,6 +72,9 @@ RUN apk add --update \
                 /root/.fonts \
                 /root/.cache/fontconfig \
                 /root/.fontconfig \ 
+# Set locale
+RUN /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true && \
+    echo "export LANG=$LANG" > /etc/profile.d/locale.sh && \
 # Set environment
 ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
 ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
