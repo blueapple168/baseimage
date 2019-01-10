@@ -5,7 +5,8 @@ MAINTAINER blueapple <blueapple1120@qq.com>
 
 ENV GLIBC_VERSION=2.28-r0
 ENV LANG C.UTF-8
-
+ENV LANGUAGE zh_CN:zh  
+ENV LC_ALL zh_CN.UTF-8
 USER root
 
 RUN mkdir -p /deployments
@@ -44,7 +45,6 @@ RUN apk add --update \
     git \
     dumb-init \
     su-exec \
-    && rm /var/cache/apk/* \
     && echo "securerandom.source=file:/dev/urandom" >> /usr/lib/jvm/default-jvm/jre/lib/security/java.security \
 # Install glibc
     && apk add --no-cache --virtual .build-deps \
@@ -72,7 +72,9 @@ RUN apk add --update \
                 /root/.local/share/fonts \
                 /root/.fonts \
                 /root/.cache/fontconfig \
-                /root/.fontconfig \ 
+                /root/.fontconfig \
+    && /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true && \
+    echo "export LANG=$LANG" > /etc/profile.d/locale.sh
 # Set environment
 ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
 ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
