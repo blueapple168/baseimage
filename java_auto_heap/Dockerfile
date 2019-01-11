@@ -14,9 +14,9 @@ RUN mkdir -p /deployments
 
 # JAVA_APP_DIR is used by run-java.sh for finding the binaries
 ENV JAVA_APP_DIR=/deployments \
-    JAVA_MAJOR_VERSION=8 \
+    JAVA_MAJOR_VERSION=8 \    
     GOSU_VERSION=1.11
-
+    
 RUN set -x \
     && apk add --no-cache --virtual .gosu-deps \
         dpkg \
@@ -44,9 +44,7 @@ RUN apk add --update \
     fontconfig \
     git \
     dumb-init \
-    su-exec \
-    busybox-extras \
-    iftop \
+    su-exec \    
     && rm /var/cache/apk/* \
     && echo "securerandom.source=file:/dev/urandom" >> /usr/lib/jvm/default-jvm/jre/lib/security/java.security \
 # Install glibc sqlite
@@ -72,17 +70,15 @@ RUN apk add --update \
                 /root/.local/share/fonts \
                 /root/.fonts \
                 /root/.cache/fontconfig \
-                /root/.fontconfig \
-    && /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true && \
-    echo "export LANG=$LANG" > /etc/profile.d/locale.sh
+                /root/.fontconfig \ 
 # Set environment
 ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
 ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
 # Agent bond including Jolokia and jmx_exporter
 ADD agent-bond-opts /opt/run-java-options
 RUN mkdir -p /opt/agent-bond \
- && wget -q http://central.maven.org/maven2/io/fabric8/agent-bond-agent/1.2.0/agent-bond-agent-1.2.0.jar \
-          -O /opt/agent-bond/agent-bond.jar \
+ && curl http://central.maven.org/maven2/io/fabric8/agent-bond-agent/1.2.0/agent-bond-agent-1.2.0.jar \
+          -o /opt/agent-bond/agent-bond.jar \
  && chmod 444 /opt/agent-bond/agent-bond.jar \
  && chmod 755 /opt/run-java-options
 ADD jmx_exporter_config.yml /opt/agent-bond/
