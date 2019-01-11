@@ -20,8 +20,6 @@ ENV JAVA_APP_DIR=/deployments \
     GOSU_VERSION=1.11
 
 RUN set -x \
-    && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositories \
-    && echo 'http://mirrors.aliyun.com/alpine/edge/testing' >> /etc/apk/repositories \
     && apk add --no-cache --virtual .gosu-deps \
        dpkg \
     && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
@@ -59,7 +57,6 @@ RUN apk add --update \
     su-exec \
     && echo "securerandom.source=file:/dev/urandom" >> /usr/lib/jvm/default-jvm/jre/lib/security/java.security \
     && echo '\
-            . /etc/profile ; \
             PS1='\''\[\e[01;33m\][\h \u:\[\e[01;34m\]\w\[\e[01;33m\]]\[\e[00m\]\$ '\'' ; \
             eval `dircolors -b` ; \
             alias ls="ls --color=auto" ; \
@@ -68,9 +65,10 @@ RUN apk add --update \
             alias l.="ls -d .* --color=auto" ; \
             alias mv="mv -i" ; \
             alias rm="rm -i" ; \
-    ' >> /etc/bash.bashrc \
+            export PATH='"${PATH}"' \
+    ' >> /etc/profile \
     && echo '. ~/.bashrc' > /root/.bash_profile \
-    && echo '. /etc/bash.bashrc' > /root/.bashrc \
+    && echo '. /etc/profile' > /root/.bashrc \
     && apk add --no-cache --virtual .build-deps \
     && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
     && wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk \
