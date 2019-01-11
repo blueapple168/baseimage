@@ -37,6 +37,8 @@ RUN apk add --update \
     sqlite-dev \
     openjdk8=8.181.13-r0 \
     bash \
+    bash-doc \
+    bash-completion \
     tree \
     tzdata \
     mkfontscale \
