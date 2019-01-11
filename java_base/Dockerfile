@@ -42,6 +42,8 @@ RUN apk add --update \
     mkfontscale \
     mkfontdir \
     fontconfig \
+    ttf-dejavu \
+    wqy-zenhei@edge wqy-zenhei \
     git \
     dumb-init \
     su-exec \
