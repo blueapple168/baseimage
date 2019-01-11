@@ -24,23 +24,6 @@ RUN set -x \
                bind-tools \
     && cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone \
-    \
-    && sed -i -e 's/\/bin\/ash/\/bin\/bash/' /etc/passwd \
-    \
-    \
-    && echo '\
-            PS1='\''\[\e[01;33m\][\h \u:\[\e[01;34m\]\w\[\e[01;33m\]]\[\e[00m\]\$ '\'' ; \
-            eval `dircolors -b` ; \
-            alias ls="ls --color=auto" ; \
-            alias l="ls -lah" ; \
-            alias ll="ls -lh" ; \
-            alias l.="ls -d .* --color=auto" ; \
-            alias mv="mv -i" ; \
-            alias rm="rm -i" ; \
-            export PATH='"${PATH}"' \
-    ' >> /etc/profile \
-    && echo '. ~/.bashrc' > /root/.bash_profile \
-    && echo '. /etc/profile' > /root/.bashrc \
     && apk del glibc-i18n \
     && rm -rf /etc/apk/keys/sgerrand.rsa.pub \
     && /bin/rm -rf /tmp/* \
