@@ -106,7 +106,7 @@ ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openj
 ADD agent-bond-opts /opt/run-java-options
 RUN mkdir -p /opt/agent-bond \
  && curl http://central.maven.org/maven2/io/fabric8/agent-bond-agent/1.2.0/agent-bond-agent-1.2.0.jar \
-          -o /opt/agent-bond/agent-bond.jar \
+         -C -o /opt/agent-bond/agent-bond.jar --progress \
  && chmod 444 /opt/agent-bond/agent-bond.jar \
  && chmod 755 /opt/run-java-options
 ADD jmx_exporter_config.yml /opt/agent-bond/
