@@ -65,6 +65,7 @@ RUN apk add --update \
     && rm -rf /glibc-i18n-${GLIBC_VERSION}.apk \
     && rm -rf /glibc-dev-${GLIBC_VERSION}.apk \
     && cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo "Asia/Shanghai" > /etc/timezone \
     && rm -rf /var/cache/apk/* \
     && rm -rf /var/lib/apt/lists/* \
     && apk del .build-deps \
