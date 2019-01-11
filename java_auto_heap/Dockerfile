@@ -4,11 +4,9 @@ FROM alpine:$ALPINE_VERSION as baseimage
 MAINTAINER blueapple <blueapple1120@qq.com>
 
 ENV GLIBC_VERSION=2.28-r0
-ENV LANG=en_US.UTF-8 \
-    LANGUAGE=en_US.UTF-8 \
-    LC_CTYPE=en_US.UTF-8 \
-    LC_ALL=en_US.UTF-8 \
-    TZ=Asia/Shanghai
+ENV LANG C.UTF-8
+ENV LANGUAGE zh_CN:zh  
+ENV LC_ALL zh_CN.UTF-8
 
 USER root
 
@@ -21,7 +19,7 @@ ENV JAVA_APP_DIR=/deployments \
 
 RUN set -x \
     && apk add --no-cache --virtual .gosu-deps \
-       dpkg \
+        dpkg \
     && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
     && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
     && chmod +x /usr/local/bin/gosu \
@@ -30,31 +28,26 @@ RUN set -x \
     && apk del .gosu-deps dpkg
 # /dev/urandom is used as random source, which is perfectly safe
 # according to http://www.2uo.de/myths-about-urandom/
-# Install glibc..
 RUN apk add --update \
     curl \
     wget \
-    openssh-client \
-    iftop \
-    perl \
-    make \
-    less \
     ca-certificates \
     libgcc \
-    libtool \
+    sqlite \
+    sqlite-dev \
     openjdk8=8.181.13-r0 \
     bash \
-    bash-completion \
     tree \
     tzdata \
     mkfontscale \
     mkfontdir \
     fontconfig \
-    ttf-dejavu \
-    wqy-zenhei@edge wqy-zenhei \
     git \
     dumb-init \
     su-exec \
+    busybox-extras \
+    iftop \
+    && rm /var/cache/apk/* \
     && echo "securerandom.source=file:/dev/urandom" >> /usr/lib/jvm/default-jvm/jre/lib/security/java.security \
     && echo '\
             PS1='\''\[\e[01;33m\][\h \u:\[\e[01;34m\]\w\[\e[01;33m\]]\[\e[00m\]\$ '\'' ; \
@@ -69,6 +62,7 @@ RUN apk add --update \
     ' >> /etc/profile \
     && echo '. ~/.bashrc' > /root/.bash_profile \
     && echo '. /etc/profile' > /root/.bashrc \
+# Install glibc sqlite
     && apk add --no-cache --virtual .build-deps \
     && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
     && wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk \
@@ -82,33 +76,30 @@ RUN apk add --update \
     && rm -rf /var/cache/apk/* \
     && rm -rf /var/lib/apt/lists/* \
     && apk del .build-deps \
-    && apk del glibc-i18n \
     && rm -rf /glibc-bin-${GLIBC_VERSION}.apk \
     && rm -rf /glibc-${GLIBC_VERSION}.apk \
     && rm -rf /glibc-i18n-${GLIBC_VERSION}.apk \
     && rm -rf /glibc-dev-${GLIBC_VERSION}.apk \
-    && rm -rf /etc/apk/keys/sgerrand.rsa.pub \
     && cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && echo "Asia/Shanghai" > /etc/timezone \
     && mkdir -p /usr/share/fonts \
                 /root/.local/share/fonts \
                 /root/.fonts \
                 /root/.cache/fontconfig \
                 /root/.fontconfig \
-    && /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true \
-    && echo "export LANG=$LANG" > /etc/profile.d/locale.sh \
+    && /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true && \
+    echo "export LANG=$LANG" > /etc/profile.d/locale.sh
 # Set environment
 ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
 ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
 # Agent bond including Jolokia and jmx_exporter
 ADD agent-bond-opts /opt/run-java-options
 RUN mkdir -p /opt/agent-bond \
- && wget -c http://central.maven.org/maven2/io/fabric8/agent-bond-agent/1.2.0/agent-bond-agent-1.2.0.jar \
-         -O /opt/agent-bond/agent-bond.jar \
+ && curl http://central.maven.org/maven2/io/fabric8/agent-bond-agent/1.2.0/agent-bond-agent-1.2.0.jar \
+          -o /opt/agent-bond/agent-bond.jar \
  && chmod 444 /opt/agent-bond/agent-bond.jar \
  && chmod 755 /opt/run-java-options
 ADD jmx_exporter_config.yml /opt/agent-bond/
-EXPOSE 8778 9779 8080
+EXPOSE 8778 9779
 
 # Add run script as /deployments/run-java.sh and make it executable
 COPY run-java.sh /deployments/
