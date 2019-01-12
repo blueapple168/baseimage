@@ -39,6 +39,7 @@ RUN apk add --update \
     bash \
     bash-doc \
     bash-completion \
+    busybox-extras \
     tree \
     tzdata \
     mkfontscale \
@@ -78,9 +79,8 @@ RUN apk add --update \
                 /root/.fonts \
                 /root/.cache/fontconfig \
                 /root/.fontconfig \
-    && /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true && \
-    echo "export LANG=$LANG" > /etc/profile.d/locale.sh \
-    && ln -sf /bin/sh /bin/bash
+    && /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true \
+    && echo "export LANG=$LANG" > /etc/profile.d/locale.sh
 # Set environment
 ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
 ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
