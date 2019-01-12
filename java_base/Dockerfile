@@ -28,8 +28,8 @@ RUN set -x \
 
 # /dev/urandom is used as random source, which is perfectly safe
 # according to http://www.2uo.de/myths-about-urandom/
-RUN apk add --update \
-    apk upgrade \
+RUN apk add --update && \
+    apk upgrade && \
     apk add --no-cache bash \
     bash-completion \
     curl \
