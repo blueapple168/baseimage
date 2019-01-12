@@ -7,6 +7,7 @@ ENV GLIBC_VERSION=2.28-r0
 ENV LANG C.UTF-8
 ENV LANGUAGE zh_CN:zh  
 ENV LC_ALL zh_CN.UTF-8
+
 USER root
 
 RUN mkdir -p /deployments
@@ -28,10 +29,7 @@ RUN set -x \
 
 # /dev/urandom is used as random source, which is perfectly safe
 # according to http://www.2uo.de/myths-about-urandom/
-RUN apk add --update && \
-    apk upgrade && \
-    apk add --no-cache bash \
-    bash-completion \
+RUN apk add --update \
     curl \
     wget \
     ca-certificates \
@@ -39,17 +37,17 @@ RUN apk add --update && \
     sqlite \
     sqlite-dev \
     openjdk8=8.181.13-r0 \
-    busybox-extras \
+    bash \
+    bash-completion \
     tree \
     tzdata \
     mkfontscale \
     mkfontdir \
     fontconfig \
-    ttf-dejavu \
-    wqy-zenhei@edge wqy-zenhei \
     git \
     dumb-init \
     su-exec \
+    && rm /var/cache/apk/* \
     && echo "securerandom.source=file:/dev/urandom" >> /usr/lib/jvm/default-jvm/jre/lib/security/java.security \
 # Install glibc
     && apk add --no-cache --virtual .build-deps \
@@ -68,7 +66,6 @@ RUN apk add --update && \
     && rm -rf /glibc-i18n-${GLIBC_VERSION}.apk \
     && rm -rf /glibc-dev-${GLIBC_VERSION}.apk \
     && cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && echo "Asia/Shanghai" > /etc/timezone \
     && rm -rf /var/cache/apk/* \
     && rm -rf /var/lib/apt/lists/* \
     && apk del .build-deps \
