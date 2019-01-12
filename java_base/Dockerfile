@@ -4,9 +4,6 @@ FROM alpine:$ALPINE_VERSION as baseimage
 MAINTAINER blueapple <blueapple1120@qq.com>
 
 ENV GLIBC_VERSION=2.28-r0
-ENV LANG C.UTF-8
-ENV LANGUAGE zh_CN:zh  
-ENV LC_ALL zh_CN.UTF-8
 
 USER root
 
@@ -38,7 +35,6 @@ RUN apk add --update \
     sqlite-dev \
     openjdk8=8.181.13-r0 \
     bash \
-    bash-completion \
     tree \
     tzdata \
     mkfontscale \
@@ -75,9 +71,7 @@ RUN apk add --update \
                 /root/.local/share/fonts \
                 /root/.fonts \
                 /root/.cache/fontconfig \
-                /root/.fontconfig \
-    && /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true \
-    && echo "export LANG=$LANG" > /etc/profile.d/locale.sh
+                /root/.fontconfig \ 
 # Set environment
 ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
 ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
