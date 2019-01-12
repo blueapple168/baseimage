@@ -85,6 +85,8 @@ RUN set -x \
     && rm -rf /glibc-i18n-${GLIBC_VERSION}.apk \
     && rm -rf /glibc-dev-${GLIBC_VERSION}.apk \
     && cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo "Asia/Shanghai" > /etc/timezone \
+    && rm /etc/apk/keys/sgerrand.rsa.pub \
     && rm -rf /var/cache/apk/* \
     && rm -rf /var/lib/apt/lists/* \
     && apk del .build-deps \
@@ -96,7 +98,10 @@ RUN set -x \
                 /root/.cache/fontconfig \
                 /root/.fontconfig \
     && /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true \
-    && echo "export LANG=$LANG" > /etc/profile.d/locale.sh
+    && echo "export LANG=$LANG" > /etc/profile.d/locale.sh \
+    \
+    && apk del glibc-i18n \
+    \
 # Set environment
 ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
 ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
