@@ -4,10 +4,10 @@ MAINTAINER blueapple <blueapple1120@qq.com>
 
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
-ENV GLIBC_VERSION=2.28-r0
-ENV LANG C.UTF-8
 ENV LANGUAGE zh_CN:zh  
 ENV LC_ALL zh_CN.UTF-8
+ENV GLIBC_VERSION=2.28-r0
+
 USER root
 
 RUN mkdir -p /deployments
