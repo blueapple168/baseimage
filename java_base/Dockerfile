@@ -109,4 +109,4 @@ RUN apk add --update && \
                        glibc-i18n \
                        
 # Set alias ll、ls、mv、rm                       
-COPY ./java_base/root/.bashrc /root/.bashrc
+COPY ./root/.bashrc /root/.bashrc
