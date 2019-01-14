@@ -30,7 +30,7 @@ ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
 ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
 
 ENV JAVA_VERSION 8u191
-ENV JAVA_ALPINE_VERSION 8.181.13-r0
+ENV JAVA_ALPINE_VERSION 8.191.12-r0
 
 RUN set -x \
 	&& apk add --no-cache --virtual .gosu-deps \
@@ -70,9 +70,6 @@ RUN apk add --update && \
     git \
     dumb-init \
     su-exec \
-# /dev/urandom is used as random source, which is perfectly safe
-# according to http://www.2uo.de/myths-about-urandom/    
-    && echo "securerandom.source=file:/dev/urandom" >> /usr/lib/jvm/default-jvm/jre/lib/security/java.security \
 # Install glibc
     && apk add --no-cache --virtual .build-deps \
     && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
