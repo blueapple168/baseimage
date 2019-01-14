@@ -1,4 +1,4 @@
-ARG ALPINE_VERSION=3.7
+ARG ALPINE_VERSION=latest
 FROM alpine:$ALPINE_VERSION as baseimage
 MAINTAINER blueapple <blueapple1120@qq.com>
 
@@ -29,24 +29,23 @@ RUN { \
 ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
 ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
 
-ENV JAVA_VERSION 8u181
-ENV JAVA_ALPINE_VERSION 8.181.13-r0
+ENV JAVA_VERSION 8u191
+ENV JAVA_ALPINE_VERSION 8.191.12-r0
 
 RUN set -x \
     && apk add --no-cache \
         openjdk8="$JAVA_ALPINE_VERSION" \
     && [ "$JAVA_HOME" = "$(docker-java-home)" ]
 # Set default timezone
+# Install gosu
 RUN set -x \
-    && apk add --no-cache -U tzdata \
+    && apk add --no-cache --virtual -U \
+    tzdata \
     tree \
-    && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && echo "Asia/Shanghai" > /etc/timezone
-#Install gosu
-RUN set -x \
-    && apk add --no-cache --virtual \
     .gosu-deps \
     dpkg \
+    && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo "Asia/Shanghai" > /etc/timezone \
     && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
     && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
     && chmod +x /usr/local/bin/gosu \
@@ -64,6 +63,8 @@ RUN apk add --update && \
     vim \
     ca-certificates \
     libgcc \
+    libtool \
+    ttf-dejavu \
     sqlite \
     sqlite-dev \
     busybox-extras \
@@ -103,4 +104,18 @@ RUN apk add --update && \
     && rm -rf /var/cache/apk/* \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /etc/apk/keys/sgerrand.rsa.pub \
-    && apk del .build-deps tree glibc-i18n tree
+    && apk del .build-deps tree glibc-i18n tree tzdata \
+# Set alias ll、ls、mv、rm
+    && echo '\
+            PS1='\''\[\e[01;33m\][\h \u:\[\e[01;34m\]\w\[\e[01;33m\]]\[\e[00m\]\$ '\'' ; \
+            eval `dircolors -b` ; \
+            alias ls="ls --color=auto" ; \
+            alias l="ls -lah" ; \
+            alias ll="ls -lh" ; \
+            alias l.="ls -d .* --color=auto" ; \
+            alias mv="mv -i" ; \
+            alias rm="rm -i" ; \
+            export PATH='"${PATH}"' \
+    ' >> /etc/profile \
+    && echo '. ~/.bashrc' > /root/.bash_profile \
+    && echo '. /etc/profile' > /root/.bashrc
