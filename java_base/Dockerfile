@@ -43,8 +43,7 @@ RUN set -x \
     dpkg \
     tzdata \
     tree \
-    && cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && echo "Asia/Shanghai" > /etc/timezone \
+    && cp -r -f /usr/share/zoneinfo/Hongkong /etc/localtime \
     && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
     && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
     && chmod +x /usr/local/bin/gosu \
@@ -104,17 +103,4 @@ RUN apk add --update && \
     && apk del .build-deps \
                        tree \
                        tzdata \
-                       glibc-i18n \
-   && echo '\
-            PS1='\''\[\e[01;33m\][\h \u:\[\e[01;34m\]\w\[\e[01;33m\]]\[\e[00m\]\$ '\'' ; \
-            eval `dircolors -b` ; \
-            alias ls="ls --color=auto" ; \
-            alias l="ls -lah" ; \
-            alias ll="ls -lh" ; \
-            alias l.="ls -d .* --color=auto" ; \
-            alias mv="mv -i" ; \
-            alias rm="rm -i" ; \
-            export PATH='"${PATH}"' \
-    ' >> /etc/profile \
-    && echo '. ~/.bashrc' > /root/.bash_profile \
-    && echo '. /etc/profile' > /root/.bashrc                    
+                       glibc-i18n                  
