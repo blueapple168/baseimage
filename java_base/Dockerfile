@@ -1,4 +1,4 @@
-ARG ALPINE_VERSION=latest
+ARG ALPINE_VERSION=3.8
 FROM alpine:$ALPINE_VERSION as baseimage
 
 MAINTAINER blueapple <blueapple1120@qq.com>
@@ -7,15 +7,22 @@ ENV GLIBC_VERSION=2.28-r0
 ENV LANG C.UTF-8
 ENV LANGUAGE zh_CN:zh  
 ENV LC_ALL zh_CN.UTF-8
+
 USER root
 
 RUN mkdir -p /deployments
 
 # JAVA_APP_DIR is used by run-java.sh for finding the binaries
 ENV JAVA_APP_DIR=/deployments \
-    JAVA_MAJOR_VERSION=8
-    
-ENV GOSU_VERSION 1.11
+    JAVA_MAJOR_VERSION=8 \
+    GOSU_VERSION=1.11
+
+# Set timezone
+RUN RUN apk add --no-cache tzdata tree \
+    && cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo "Asia/Shanghai" > /etc/timezone
+
+#Install gosu dpkg
 RUN set -x \
     && apk add --no-cache --virtual .gosu-deps \
         dpkg \
@@ -23,8 +30,7 @@ RUN set -x \
     && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
     && chmod +x /usr/local/bin/gosu \
     && ln -s /usr/local/bin/gosu /usr/bin/gosu \
-    && gosu nobody true \
-    && apk del .gosu-deps dpkg
+    && gosu nobody true
 
 # /dev/urandom is used as random source, which is perfectly safe
 # according to http://www.2uo.de/myths-about-urandom/
@@ -35,10 +41,8 @@ RUN apk add --update \
     libgcc \
     sqlite \
     sqlite-dev \
-    openjdk8=8.181.13-r0 \
+    openjdk8=8.191.12-r0 \
     bash \
-    tree \
-    tzdata \
     mkfontscale \
     mkfontdir \
     fontconfig \
@@ -62,19 +66,21 @@ RUN apk add --update \
     && rm -rf /glibc-${GLIBC_VERSION}.apk \
     && rm -rf /glibc-i18n-${GLIBC_VERSION}.apk \
     && rm -rf /glibc-dev-${GLIBC_VERSION}.apk \
-    && cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && rm -rf /var/cache/apk/* \
     && rm -rf /var/lib/apt/lists/* \
-    && apk del .build-deps \
-                       tree \
-                       tzdata \
     && mkdir -p /usr/share/fonts \
                 /root/.local/share/fonts \
                 /root/.fonts \
                 /root/.cache/fontconfig \
                 /root/.fontconfig \
-    && /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true && \
-    echo "export LANG=$LANG" > /etc/profile.d/locale.sh
+    && /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true \
+    && echo "export LANG=$LANG" > /etc/profile.d/locale.sh \
+    && apk del .build-deps \
+                       tree \
+                       tzdata \
+                       .gosu-deps \
+                       dpkg \
+
 # Set environment
 ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
 ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
