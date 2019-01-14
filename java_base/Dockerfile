@@ -36,14 +36,14 @@ RUN set -x \
     && apk add --no-cache \
         openjdk8="$JAVA_ALPINE_VERSION" \
     && [ "$JAVA_HOME" = "$(docker-java-home)" ]
-#Install gosu && set time zone
+#Install gosu
 RUN set -x \
     && apk add --no-cache --virtual \
     .gosu-deps \
     dpkg \
     tzdata \
     tree \
-    && cp -r -f /usr/share/zoneinfo/Hongkong /etc/localtime \
+    # && cp -r -f /usr/share/zoneinfo/Hongkong /etc/localtime \
     && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
     && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
     && chmod +x /usr/local/bin/gosu \
