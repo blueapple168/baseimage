@@ -75,6 +75,7 @@ RUN apk add --update && \
     git \
     dumb-init \
     su-exec \
+    coreutils \
 # Install glibc
     && apk add --no-cache --virtual .build-deps \
     && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
@@ -111,6 +112,7 @@ RUN apk add --update && \
 # Set alias ll、ls、mv、rm                       
     && echo '\
             PS1='\''\[\e[01;33m\][\h \u:\[\e[01;34m\]\w\[\e[01;33m\]]\[\e[00m\]\$ '\'' ; \
+            eval `dircolors -b` ; \
             alias ls="ls --color=auto" ; \
             alias l="ls -lah" ; \
             alias ll="ls -lh" ; \
