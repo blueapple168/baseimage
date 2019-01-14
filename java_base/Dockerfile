@@ -18,7 +18,7 @@ ENV JAVA_APP_DIR=/deployments \
     GOSU_VERSION=1.11
 
 # Set timezone
-RUN RUN apk add --no-cache tzdata tree \
+RUN apk add --no-cache tzdata tree \
     && cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone
 
