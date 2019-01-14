@@ -1,4 +1,4 @@
-ARG ALPINE_VERSION=3.8
+ARG ALPINE_VERSION=3.7
 FROM alpine:$ALPINE_VERSION as baseimage
 MAINTAINER blueapple <blueapple1120@qq.com>
 
@@ -36,17 +36,14 @@ RUN set -x \
     && apk add --no-cache \
         openjdk8="$JAVA_ALPINE_VERSION" \
     && [ "$JAVA_HOME" = "$(docker-java-home)" ]
-# Set default timezone
-RUN set -x \
-    && apk add --no-cache -U tzdata \
-    tree \
-    && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && echo "Asia/Shanghai" > /etc/timezone
-#Install gosu
+#Install gosu && set timezone
 RUN set -x \
     && apk add --no-cache --virtual \
     .gosu-deps \
     dpkg \
+    tzdata \
+    tree \
+    && cp -r -f /usr/share/zoneinfo/Shanghai /etc/localtime \
     && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
     && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
     && chmod +x /usr/local/bin/gosu \
@@ -103,4 +100,4 @@ RUN apk add --update && \
     && rm -rf /var/cache/apk/* \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /etc/apk/keys/sgerrand.rsa.pub \
-    && apk del .build-deps tree glibc-i18n tree tzdata
+    && apk del .build-deps tree glibc-i18n
