@@ -93,7 +93,7 @@ RUN apk add --update && \
     && echo "export LANG=$LANG" > /etc/profile.d/locale.sh \
 # /dev/urandom is used as random source, which is perfectly safe
 # according to http://www.2uo.de/myths-about-urandom/
-    &&  sed -i 's/securerandom.source\=file\:\/dev\/random/securerandom.source\=file\:\/dev\/urandom/g' /usr/lib/jvm/default-jvm/jre/lib/security/java.security \
+    && sed -i 's/securerandom.source\=file\:\/dev\/random/securerandom.source\=file\:\/dev\/urandom/g' /usr/lib/jvm/default-jvm/jre/lib/security/java.security \
     && rm -rf /glibc-bin-${GLIBC_VERSION}.apk \
     && rm -rf /glibc-${GLIBC_VERSION}.apk \
     && rm -rf /glibc-i18n-${GLIBC_VERSION}.apk \
