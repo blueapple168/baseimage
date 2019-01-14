@@ -39,7 +39,7 @@ RUN set -x \
 # Set default timezone
 # Install gosu
 RUN set -x \
-    && apk add --no-cache --virtual -U \
+    && apk add --no-cache --virtual \
     tzdata \
     tree \
     .gosu-deps \
