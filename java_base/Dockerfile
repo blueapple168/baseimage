@@ -107,7 +107,7 @@ RUN apk add --update && \
                        tree \
                        tzdata \
                        glibc-i18n \
-   && echo '\
+    && echo '\
             PS1='\''\[\e[01;33m\][\h \u:\[\e[01;34m\]\w\[\e[01;33m\]]\[\e[00m\]\$ '\'' ; \
             eval `dircolors -b` ; \
             alias ls="ls --color=auto" ; \
