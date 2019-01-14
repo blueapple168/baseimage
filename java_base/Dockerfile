@@ -36,7 +36,7 @@ RUN set -x \
     && apk add --no-cache \
         openjdk8="$JAVA_ALPINE_VERSION" \
     && [ "$JAVA_HOME" = "$(docker-java-home)" ]
-#Install gosu && set time zone
+# Install gosu && set time zone
 RUN set -x \
     && apk add --no-cache --virtual \
     .gosu-deps \
