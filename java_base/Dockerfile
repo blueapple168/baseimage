@@ -1,4 +1,4 @@
-ARG ALPINE_VERSION=latest
+ARG ALPINE_VERSION=3.8
 FROM alpine:$ALPINE_VERSION as baseimage
 MAINTAINER blueapple <blueapple1120@qq.com>
 
@@ -36,15 +36,14 @@ RUN set -x \
     && apk add --no-cache \
         openjdk8="$JAVA_ALPINE_VERSION" \
     && [ "$JAVA_HOME" = "$(docker-java-home)" ]
-# Set default timezone
-# Install gosu
+#Install gosu && set time zone
 RUN set -x \
     && apk add --no-cache --virtual \
-    tzdata \
-    tree \
     .gosu-deps \
     dpkg \
-    && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    tzdata \
+    tree \
+    && cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone \
     && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
     && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
@@ -104,9 +103,11 @@ RUN apk add --update && \
     && rm -rf /var/cache/apk/* \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /etc/apk/keys/sgerrand.rsa.pub \
-    && apk del .build-deps tree glibc-i18n tree tzdata \
-# Set alias ll、ls、mv、rm
-    && echo '\
+    && apk del .build-deps \
+                       tree \
+                       tzdata \
+                       glibc-i18n \
+   && echo '\
             PS1='\''\[\e[01;33m\][\h \u:\[\e[01;34m\]\w\[\e[01;33m\]]\[\e[00m\]\$ '\'' ; \
             eval `dircolors -b` ; \
             alias ls="ls --color=auto" ; \
