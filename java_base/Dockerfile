@@ -49,12 +49,16 @@ RUN set -x \
     && gosu nobody true \
     && apk del .gosu-deps dpkg
 #Install other app
-RUN apk add --update && \
+RUN set -x \
+    && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositories \
+    && echo 'http://mirrors.aliyun.com/alpine/edge/testing' >> /etc/apk/repositories \
+    apk add --update && \
     apk upgrade && \
     apk add --no-cache bash \
     bash-completion \
     curl \
     wget \
+    vim \
     ca-certificates \
     libgcc \
     sqlite \
