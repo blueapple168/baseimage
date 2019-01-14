@@ -49,12 +49,10 @@ RUN set -x \
     && gosu nobody true \
     && apk del .gosu-deps dpkg
 #Install other app
-RUN set -x \
-    && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositories \
-    && echo 'http://mirrors.aliyun.com/alpine/edge/testing' >> /etc/apk/repositories \
-    apk add --update && \
+RUN apk add --update && \
     apk upgrade && \
-    apk add --no-cache bash \
+    apk add --no-cache \
+    bash \
     bash-completion \
     curl \
     wget \
@@ -69,8 +67,6 @@ RUN set -x \
     mkfontscale \
     mkfontdir \
     fontconfig \
-    ttf-dejavu \
-    wqy-zenhei@edge wqy-zenhei \
     git \
     dumb-init \
     su-exec \
