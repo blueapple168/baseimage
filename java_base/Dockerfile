@@ -43,7 +43,8 @@ RUN set -x \
     dpkg \
     tzdata \
     tree \
-    # && cp -r -f /usr/share/zoneinfo/Hongkong /etc/localtime \
+    && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo "Asia/Shanghai" > /etc/timezone \
     && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
     && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
     && chmod +x /usr/local/bin/gosu \
@@ -100,7 +101,4 @@ RUN apk add --update && \
     && rm -rf /var/cache/apk/* \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /etc/apk/keys/sgerrand.rsa.pub \
-    && apk del .build-deps \
-                       tree \
-                       tzdata \
-                       glibc-i18n                  
+    && apk del .build-deps tree glibc-i18n                  
