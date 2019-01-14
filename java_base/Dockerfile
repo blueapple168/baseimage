@@ -34,10 +34,10 @@ ENV JAVA_ALPINE_VERSION 8.191.12-r0
 
 RUN set -x \
 	&& apk add --no-cache --virtual .gosu-deps \
-       dpkg \
-	   tzdata \
-	   tree \
-	   openjdk8="$JAVA_ALPINE_VERSION" \
+        dpkg \
+	tzdata \
+	tree \
+	openjdk8="$JAVA_ALPINE_VERSION" \
 	&& [ "$JAVA_HOME" = "$(docker-java-home)" ] \
     && cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone \
