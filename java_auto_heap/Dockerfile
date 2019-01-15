@@ -2,36 +2,6 @@ FROM blueapple/baseimage:base
 
 MAINTAINER blueapple <blueapple1120@qq.com>
 
-RUN set -x \
-    && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositories \
-    && echo 'http://mirrors.aliyun.com/alpine/edge/testing' >> /etc/apk/repositories \
-    && apk update \
-    && apk add --no-cache --allow-untrusted --update-cache \
-               wget vim curl \
-               openssh-client git perl make less \
-               bash bash-completion \
-               htop iftop \
-               busybox-extras \
-               coreutils \
-               ca-certificates \
-               libtool \
-               gcc \
-               ttf-dejavu \
-               fontconfig \
-               wqy-zenhei@edge wqy-zenhei \
-               apk-tools \
-               netcat-openbsd \
-               bind-tools \
-    && cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && echo "Asia/Shanghai" > /etc/timezone \
-    && apk del glibc-i18n \
-    && rm -rf /etc/apk/keys/sgerrand.rsa.pub \
-    && /bin/rm -rf /tmp/* \
-       /var/cache/apk/* \
-       /var/lib/apt/lists/* \
-    && /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true \
-    && echo "export LANG=$LANG" > /etc/profile.d/locale.sh
-
 # Agent bond including Jolokia and jmx_exporter
 ADD agent-bond-opts /opt/run-java-options
 RUN mkdir -p /opt/agent-bond \
