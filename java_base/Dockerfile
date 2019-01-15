@@ -62,10 +62,7 @@ RUN apk add --update && \
     vim \
     ca-certificates \
     libgcc \
-    libtool \
     ttf-dejavu \
-    sqlite \
-    sqlite-dev \
     busybox-extras \
     tree \
     tzdata \
