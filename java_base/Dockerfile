@@ -69,7 +69,6 @@ RUN apk add --update && \
     mkfontscale \
     mkfontdir \
     fontconfig \
-    git \
     dumb-init \
     su-exec \
     coreutils \
