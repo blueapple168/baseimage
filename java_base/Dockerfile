@@ -34,7 +34,7 @@ ENV JAVA_ALPINE_VERSION 8.212.04-r0
 
 RUN set -x \
     && apk add --no-cache \
-        openjdk8="$JAVA_ALPINE_VERSION" \
+        openjdk8="$JAVA_MAJOR_VERSION" \
     && [ "$JAVA_HOME" = "$(docker-java-home)" ]
 # Install gosu && set time zone
 RUN set -x \
