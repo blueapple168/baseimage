@@ -25,41 +25,8 @@ MAINTAINER blueapple <blueapple1120@qq.com>
 ENV LANG C.UTF-8
 ENV LANGUAGE zh_CN:zh  
 ENV LC_ALL zh_CN.UTF-8
-ENV GOSU_VERSION 1.11
 
-#Install app
-RUN apk add --update && \
-    apk upgrade && \
-    apk add --no-cache \
-    bash \
-    bash-completion \
-    curl \
-    wget \
-    vim \
-    ca-certificates \
-    libgcc \
-    ttf-dejavu \
-    busybox-extras \
-    tree \
-    tzdata \
-    mkfontscale \
-    mkfontdir \
-    fontconfig \
-    dumb-init \
-    su-exec \
-    coreutils \
-    && cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && echo "Asia/Shanghai" > /etc/timezone \
-    && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
-    && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
-    && chmod +x /usr/local/bin/gosu \
-    && ln -s /usr/local/bin/gosu /usr/bin/gosu \
-    && gosu nobody true \
-    && apk del .gosu-deps dpkg tree tzdata \
-    && rm -rf /var/cache/apk/* \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN apk add --no-cache --virtual .build-deps binutils \
+RUN apk add --no-cache --virtual .build-deps curl binutils \
     && GLIBC_VER="2.29-r0" \
     && ALPINE_GLIBC_REPO="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" \
     && GCC_LIBS_URL="https://archive.archlinux.org/packages/g/gcc-libs/gcc-libs-9.1.0-2-x86_64.pkg.tar.xz" \
@@ -75,11 +42,6 @@ RUN apk add --no-cache --virtual .build-deps binutils \
     && apk add --no-cache /tmp/glibc-bin-${GLIBC_VER}.apk \
     && curl -Ls ${ALPINE_GLIBC_REPO}/${GLIBC_VER}/glibc-i18n-${GLIBC_VER}.apk > /tmp/glibc-i18n-${GLIBC_VER}.apk \
     && apk add --no-cache /tmp/glibc-i18n-${GLIBC_VER}.apk \
-    && mkdir -p /usr/share/fonts \
-                /root/.local/share/fonts \
-                /root/.fonts \
-                /root/.cache/fontconfig \
-                /root/.fontconfig \
     && /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true \
     && echo "export LANG=$LANG" > /etc/profile.d/locale.sh \
     && curl -LfsS ${GCC_LIBS_URL} -o /tmp/gcc-libs.tar.xz \
@@ -99,7 +61,7 @@ RUN apk add --no-cache --virtual .build-deps binutils \
 ENV JAVA_VERSION jdk-11.0.5+10
 
 RUN set -eux; \
-    apk add --no-cache --virtual .fetch-deps; \
+    apk add --no-cache --virtual .fetch-deps curl; \
     ARCH="$(apk --print-arch)"; \
     case "${ARCH}" in \
        armhf) \
@@ -126,26 +88,7 @@ RUN set -eux; \
     tar -xf /tmp/openjdk.tar.gz --strip-components=1; \
     apk del --purge .fetch-deps; \
     rm -rf /var/cache/apk/*; \
-    rm -rf /tmp/openjdk.tar.gz; \
-
-    # Set alias ll、ls、mv、rm                       
-    && echo '\
-            PS1='\''\[\e[01;33m\][\h \u:\[\e[01;34m\]\w\[\e[01;33m\]]\[\e[00m\]\$ '\'' ; \
-            eval `dircolors -b` ; \
-            alias ls="ls --color=auto" ; \
-            alias l="ls -lah" ; \
-            alias ll="ls -lh" ; \
-            alias l.="ls -d .* --color=auto" ; \
-            alias mv="mv -i" ; \
-            alias rm="rm -i" ; \
-            export PATH='"${PATH}"' \
-    ' >> /etc/profile \
-    && echo '. ~/.bashrc' > /root/.bash_profile \
-    && echo '. /etc/profile' > /root/.bashrc \
-
-    # /dev/urandom is used as random source, which is perfectly safe
-    # according to http://www.2uo.de/myths-about-urandom/
-    && sed -i 's/securerandom.source\=file\:\/dev\/random/securerandom.source\=file\:\/dev\/urandom/g' /opt/java/openjdk/conf/security/java.security
+    rm -rf /tmp/openjdk.tar.gz;
 
 ENV JAVA_HOME=/opt/java/openjdk \
     PATH="/opt/java/openjdk/bin:$PATH"
