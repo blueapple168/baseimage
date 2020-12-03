@@ -55,7 +55,6 @@ RUN set -x \
 #Install other app
 RUN apk add --update && \
     apk upgrade && \
-    apk add --no-cache tzdata --virtual .build-deps curl binutils zstd \
     bash \
     bash-completion \
     curl \
@@ -70,6 +69,7 @@ RUN apk add --update && \
     dumb-init \
     su-exec \
     coreutils \
+    apk add --no-cache tzdata --virtual .build-deps curl binutils zstd \
 #Install glibc
     && GLIBC_VER="2.31-r0" \
     && ALPINE_GLIBC_REPO="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" \
