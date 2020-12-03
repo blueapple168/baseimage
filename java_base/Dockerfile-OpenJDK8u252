@@ -39,25 +39,15 @@ RUN set -x \
     && [ "$JAVA_HOME" = "$(docker-java-home)" ]
 # Install gosu && set time zone
 RUN set -x \
-    && apk add --no-cache --virtual \
+    && apk add --no-cache --virtual binutils zstd \
     .gosu-deps \
     dpkg \
     tzdata \
     tree \
-    && cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && echo "Asia/Shanghai" > /etc/timezone \
-    && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
-    && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
-    && chmod +x /usr/local/bin/gosu \
-    && ln -s /usr/local/bin/gosu /usr/bin/gosu \
-    && gosu nobody true \
-    && apk del .gosu-deps dpkg
-#Install other app
-RUN apk add --update && \
-    apk upgrade && \
+    curl \
+    vim \
     bash \
     bash-completion \
-    curl \
     wget \
     vim \
     ca-certificates \
@@ -69,7 +59,14 @@ RUN apk add --update && \
     dumb-init \
     su-exec \
     coreutils \
-    apk add --no-cache tzdata --virtual .build-deps curl binutils zstd \
+    && cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo "Asia/Shanghai" > /etc/timezone \
+    && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
+    && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
+    && chmod +x /usr/local/bin/gosu \
+    && ln -s /usr/local/bin/gosu /usr/bin/gosu \
+    && gosu nobody true \
+    && apk del .gosu-deps dpkg \
 #Install glibc
     && GLIBC_VER="2.31-r0" \
     && ALPINE_GLIBC_REPO="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" \
