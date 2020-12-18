@@ -34,6 +34,7 @@ RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd; \
     mkdir /tmp/libz; \
     tar -xf /tmp/libz.tar.xz -C /tmp/libz; \
     mv /tmp/libz/usr/lib/libz.so* /usr/glibc-compat/lib; \
+    apk del --purge .build-deps .fetch-deps glibc-i18n; \
     apk add --no-cache \
     curl \
     tzdata \
@@ -49,7 +50,7 @@ RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd; \
     dumb-init; \
     cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime; \
     echo "Asia/Shanghai" > /etc/timezone; \
-    apk del .build-deps glibc-i18n tzdata zst --virtual; \
+    apk del tzdata zst; \
     rm -rf /tmp/*.apk /tmp/gcc /tmp/gcc-libs.tar* /tmp/libz /tmp/libz.tar.xz /var/cache/apk/*; \
     echo "SCC generation phase completed"; \
     # Set alias ll、ls、mv、rm                       
