@@ -4,7 +4,7 @@ MAINTAINER blueapple <blueapple1120@qq.com>
 
 ENV LANG='zh_CN.UTF-8' LANGUAGE='zh_CN:zh' LC_ALL='zh_CN.UTF-8'
 
-RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd; \
+RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd .gosu-deps; \
     GLIBC_VER="2.31-r0"; \
     ALPINE_GLIBC_REPO="https://github.com/sgerrand/alpine-pkg-glibc/releases/download"; \
     GCC_LIBS_URL="https://archive.archlinux.org/packages/g/gcc-libs/gcc-libs-10.1.0-2-x86_64.pkg.tar.zst"; \
@@ -50,7 +50,12 @@ RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd; \
     dumb-init; \
     cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime; \
     echo "Asia/Shanghai" > /etc/timezone; \
-    apk del tzdata zst; \
+    dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
+    wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
+    chmod +x /usr/local/bin/gosu; \
+    ln -s /usr/local/bin/gosu /usr/bin/gosu; \
+    gosu nobody true; \
+    apk del tzdata zst .gosu-deps dpkg; \
     rm -rf /tmp/*.apk /tmp/gcc /tmp/gcc-libs.tar* /tmp/libz /tmp/libz.tar.xz /var/cache/apk/*; \
     echo "SCC generation phase completed"; \
     # Set alias ll、ls、mv、rm                       
