@@ -58,6 +58,9 @@ RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd .gosu-dep
     apk del tzdata zst .gosu-deps dpkg; \
     rm -rf /tmp/*.apk /tmp/gcc /tmp/gcc-libs.tar* /tmp/libz /tmp/libz.tar.xz /var/cache/apk/*; \
     echo "SCC generation phase completed"; \
+    # /dev/urandom is used as random source, which is perfectly safe
+    # according to http://www.2uo.de/myths-about-urandom/
+    sed -i 's/securerandom.source\=file\:\/dev\/random/securerandom.source\=file\:\/dev\/urandom/g' /opt/java/openjdk/jre/lib/security/java.security; \
     # Set alias ll、ls、mv、rm                       
     echo '\
             PS1='\''\[\e[01;33m\][\h \u:\[\e[01;34m\]\w\[\e[01;33m\]]\[\e[00m\]\$ '\'' ; \
