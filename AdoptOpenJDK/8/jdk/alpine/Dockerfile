@@ -47,6 +47,7 @@ RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd .gosu-dep
     mkfontdir \
     fontconfig \
     coreutils \
+    dpkg \
     dumb-init; \
     cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime; \
     echo "Asia/Shanghai" > /etc/timezone; \
