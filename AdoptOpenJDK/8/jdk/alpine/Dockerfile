@@ -3,6 +3,7 @@ FROM adoptopenjdk/openjdk8-openj9:$IMAGE_VERSION AS baseimage
 MAINTAINER blueapple <blueapple1120@qq.com>
 
 ENV LANG='zh_CN.UTF-8' LANGUAGE='zh_CN:zh' LC_ALL='zh_CN.UTF-8'
+ENV GOSU_VERSION=1.12
 
 RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd .gosu-deps; \
     GLIBC_VER="2.31-r0"; \
