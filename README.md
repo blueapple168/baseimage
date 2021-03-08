@@ -35,4 +35,4 @@ The core of how gosu works is stolen directly from how Docker/libcontainer itsel
 Imags Instructions
 - The blueapple/alpine_glibc_basicimage/java_base is base alpine.
 - The blueapple/alpine_glibc_basicimage/java_auto_heap's shell base [fabric8/java-jboss-openjdk8-jdk](https://hub.docker.com/r/fabric8/java-jboss-openjdk8-jdk/)
-- The blueapple/alpine_glibc_basicimage/jdk8u275-b01_openj9-0.23.0-alpine base [adoptopenjdk/openjdk8-openj9:jdk8u275-b01_openj9-0.23.0-alpine](https://hub.docker.com/r/adoptopenjdk/openjdk8-openj9)
+- The blueapple/alpine_glibc_basicimage/jdk8u275-b01_openj9 base [adoptopenjdk/openjdk8-openj9:jdk8u275-b01_openj9-0.23.0-alpine](https://hub.docker.com/r/adoptopenjdk/openjdk8-openj9)
