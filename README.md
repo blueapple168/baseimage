@@ -2,6 +2,7 @@
 -	[`base`, `latest` (*Alpine/openjdk8/glibc/Dockerfile*)](https://github.com/blueapple188/baseimage/blob/master/java_base/Dockerfile)
 -	[`base-jdk8u252`(*Alpine/openjdk8/glibc/Dockerfile-OpenJDK8u252*)](https://github.com/blueapple168/baseimage/blob/master/java_base/Dockerfile-OpenJDK8u252)
 -	[`auto_heap` (*Alpine/openjdk8/glibc/agent-bond/jmx_exporter/run-java.sh/Dockerfile*)](https://github.com/blueapple188/baseimage/blob/master/java_auto_heap/Dockerfile)
+-	[`jdk8u275-b01_openj9-0.23.0-alpine` (*Alpine3.12/adoptopenjdk8-openj9-0.23.0/glibc/gosu/dumb-init/Dockerfile*)](https://github.com/blueapple168/baseimage/blob/master/AdoptOpenJDK/8/jdk/alpine/Dockerfile)	
 # Alpine Openjdk Base Images
 
 This is a repository for Java Docker base images used in other projects.
@@ -34,3 +35,4 @@ The core of how gosu works is stolen directly from how Docker/libcontainer itsel
 Imags Instructions
 - The blueapple/alpine_glibc_basicimage/java_base is base alpine.
 - The blueapple/alpine_glibc_basicimage/java_auto_heap's shell base [fabric8/java-jboss-openjdk8-jdk](https://hub.docker.com/r/fabric8/java-jboss-openjdk8-jdk/)
+- The blueapple/alpine_glibc_basicimage/jdk8u275-b01_openj9-0.23.0-alpine base [adoptopenjdk/openjdk8-openj9:jdk8u275-b01_openj9-0.23.0-alpine](https://hub.docker.com/r/adoptopenjdk/openjdk8-openj9)
