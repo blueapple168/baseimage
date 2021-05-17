@@ -80,14 +80,3 @@ RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd .gosu-dep
 WORKDIR /deployments
 # JAVA_APP_DIR is used by run-java.sh for finding the binaries
 ENV JAVA_APP_DIR=/deployments
-
-
-FROM adoptopenjdk/openjdk8-openj9:$IMAGE_VERSION AS prod
-
-COPY --from=baseimage / /
-COPY --from=baseimage /root/.bash_profile /root/.bash_profile
-COPY --from=baseimage /root/.bashrc /root/.bashrc
-
-WORKDIR /deployments
-# JAVA_APP_DIR is used by run-java.sh for finding the binaries
-ENV JAVA_APP_DIR=/deployments
