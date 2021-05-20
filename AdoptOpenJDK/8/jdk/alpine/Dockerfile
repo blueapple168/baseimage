@@ -85,3 +85,4 @@ RUN apk add --update ; \
 WORKDIR /deployments
 # JAVA_APP_DIR is used by run-java.sh for finding the binaries
 ENV JAVA_APP_DIR=/deployments
+ENV JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
