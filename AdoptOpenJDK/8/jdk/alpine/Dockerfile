@@ -83,4 +83,4 @@ RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd .gosu-dep
 WORKDIR /deployments
 # JAVA_APP_DIR is used by run-java.sh for finding the binaries
 ENV JAVA_APP_DIR=/deployments
-ENV JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8 -server -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=2
+ENV JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8 -server -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=2"
