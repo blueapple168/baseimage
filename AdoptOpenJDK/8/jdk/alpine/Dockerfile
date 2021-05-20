@@ -6,9 +6,11 @@ ENV LANG C.UTF-8
 ENV LANGUAGE zh_CN:zh  
 ENV LC_ALL zh_CN.UTF-8
 ENV GOSU_VERSION=1.12
+ENV GLIBC_VER=2.31-r0
 
-RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd .gosu-deps; \
-    GLIBC_VER="2.31-r0"; \
+RUN apk add --update ; \
+    apk upgrade ; \
+    apk add --no-cache tzdata --virtual .build-deps curl binutils zstd .gosu-deps; \
     ALPINE_GLIBC_REPO="https://github.com/sgerrand/alpine-pkg-glibc/releases/download"; \
     GCC_LIBS_URL="https://archive.archlinux.org/packages/g/gcc-libs/gcc-libs-10.1.0-2-x86_64.pkg.tar.zst"; \
     GCC_LIBS_SHA256="f80320a03ff73e82271064e4f684cd58d7dbdb07aa06a2c4eea8e0f3c507c45c"; \
