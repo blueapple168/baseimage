@@ -31,7 +31,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/re
     tar -xf /tmp/gcc-libs.tar -C /tmp/gcc; \
     mv /tmp/gcc/usr/lib/libgcc* /tmp/gcc/usr/lib/libstdc++* /usr/glibc-compat/lib; \
     strip /usr/glibc-compat/lib/libgcc_s.so.* /usr/glibc-compat/lib/libstdc++.so*; \
-    wget -O /tmp/libz.tar.xz ${ZLIB_URL}; \
+    wget -O /tmp/libz.tar.xz ${ZLIB_URL} --no-check-certificate ; \
     echo "${ZLIB_SHA256} */tmp/libz.tar.xz" | sha256sum -c -; \
     mkdir /tmp/libz; \
     tar -xf /tmp/libz.tar.xz -C /tmp/libz; \
