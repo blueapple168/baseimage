@@ -32,7 +32,7 @@ RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd .gosu-dep
     tar -xf /tmp/gcc-libs.tar -C /tmp/gcc; \
     mv /tmp/gcc/usr/lib/libgcc* /tmp/gcc/usr/lib/libstdc++* /usr/glibc-compat/lib; \
     strip /usr/glibc-compat/lib/libgcc_s.so.* /usr/glibc-compat/lib/libstdc++.so*; \
-    wget -q -O ${ZLIB_URL} -o /tmp/libz.tar.xz; \
+    wget -q -O /tmp/libz.tar.xz ${ZLIB_URL} ; \
     echo "${ZLIB_SHA256} */tmp/libz.tar.xz" | sha256sum -c -; \
     mkdir /tmp/libz; \
     tar -xf /tmp/libz.tar.xz -C /tmp/libz; \
@@ -55,7 +55,7 @@ RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd .gosu-dep
     cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime; \
     echo "Asia/Shanghai" > /etc/timezone; \
     dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
-    wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
+    wget -q -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
     chmod +x /usr/local/bin/gosu; \
     ln -s /usr/local/bin/gosu /usr/bin/gosu; \
     ln -s /usr/glibc-compat/bin/locale /usr/bin/locale ; \
