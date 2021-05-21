@@ -139,7 +139,7 @@ RUN set -eux; \
     ln -s /usr/local/bin/gosu /usr/bin/gosu; \
     ln -s /usr/glibc-compat/bin/locale /usr/bin/locale ; \
     gosu nobody true; \
-    apk del tzdata zst dpkg; \
+    apk del tzdata dpkg; \
     rm -rf /tmp/*.apk /tmp/gcc /tmp/gcc-libs.tar* /tmp/libz /tmp/libz.tar.xz /var/cache/apk/*; \
     # /dev/urandom is used as random source, which is perfectly safe
     # according to http://www.2uo.de/myths-about-urandom/
