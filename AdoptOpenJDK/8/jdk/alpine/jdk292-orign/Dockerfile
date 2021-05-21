@@ -4,6 +4,7 @@ MAINTAINER blueapple1120@qq.com
 
 ENV LANG='C.UTF-8' LANGUAGE='zh_CN:zh' LC_ALL='zh_CN.UTF-8'
 ENV GLIBC_VER='2.31-r0'
+ENV GOSU_VERSION='1.12'
 
 RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd \
     && ALPINE_GLIBC_REPO="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" \
