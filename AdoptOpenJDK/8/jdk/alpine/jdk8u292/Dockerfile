@@ -82,4 +82,4 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 WORKDIR /deployments
 # JAVA_APP_DIR is used by run-java.sh for finding the binaries
 ENV JAVA_APP_DIR=/deployments
-ENV JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8 -server -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=2"
+ENV JAVA_TOOL_OPTIONS="-XX:+IgnoreUnrecognizedVMOptions -XX:+IdleTuningGcOnIdle -Xshareclasses:name=openj9_system_scc,cacheDir=/opt/java/.scc,readonly,nonFatal -Dfile.encoding=UTF-8 -server -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=2"
