@@ -129,7 +129,6 @@ RUN set -eux; \
     fontconfig \
     coreutils \
     dumb-init; \
-    .gosu-deps; \
     cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime; \
     echo "Asia/Shanghai" > /etc/timezone; \
     dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
@@ -138,7 +137,7 @@ RUN set -eux; \
     ln -s /usr/local/bin/gosu /usr/bin/gosu; \
     ln -s /usr/glibc-compat/bin/locale /usr/bin/locale ; \
     gosu nobody true; \
-    apk del tzdata zst .gosu-deps dpkg; \
+    apk del tzdata zst dpkg; \
     rm -rf /tmp/*.apk /tmp/gcc /tmp/gcc-libs.tar* /tmp/libz /tmp/libz.tar.xz /var/cache/apk/*; \
     # /dev/urandom is used as random source, which is perfectly safe
     # according to http://www.2uo.de/myths-about-urandom/
