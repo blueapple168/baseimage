@@ -3,6 +3,7 @@
 -	[`base-jdk8u252`(*Alpine/openjdk8/glibc/Dockerfile-OpenJDK8u252*)](https://github.com/blueapple168/baseimage/blob/master/java_base/Dockerfile-OpenJDK8u252)
 -	[`auto_heap` (*Alpine/openjdk8/glibc/agent-bond/jmx_exporter/run-java.sh/Dockerfile*)](https://github.com/blueapple188/baseimage/blob/master/java_auto_heap/Dockerfile)
 -	[`jdk8u275-b01_openj9-0.23.0-alpine` (*Alpine3.12/adoptopenjdk8-openj9-0.23.0/glibc/gosu/dumb-init/Dockerfile*)](https://github.com/blueapple168/baseimage/blob/master/AdoptOpenJDK/8/jdk/alpine/Dockerfile)	
+-	[`jdk8u292-b10_openj9-0.26.0-alpine` (*Alpine3.12/adoptopenjdk8-openj9-0.26.0/glibc/dumb-init/Dockerfile*)](https://github.com/blueapple168/baseimage/blob/master/AdoptOpenJDK/8/jdk/alpine/jdk8u292-orign/Dockerfile)
 # Alpine Openjdk Base Images
 
 This is a repository for Java Docker base images used in other projects.
