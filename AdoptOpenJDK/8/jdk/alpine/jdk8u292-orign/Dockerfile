@@ -4,7 +4,6 @@ MAINTAINER blueapple1120@qq.com
 
 ENV LANG='C.UTF-8' LANGUAGE='zh_CN:zh' LC_ALL='zh_CN.UTF-8'
 ENV GLIBC_VER='2.31-r0'
-ENV GOSU_VERSION='1.12'
 
 RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd \
     && ALPINE_GLIBC_REPO="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" \
@@ -72,6 +71,7 @@ ENV JAVA_TOOL_OPTIONS="-XX:+IgnoreUnrecognizedVMOptions -XX:+IdleTuningGcOnIdle 
 # With SCC, OpenJ9 startup is improved ~50% with an increase in image size of ~14MB
 # Application classes can be create a separate cache layer with this as the base for further startup improvement
 
+# ENV GOSU_VERSION='1.12'
 RUN set -eux; \
     apk add --no-cache --virtual .scc-deps curl; \
     unset OPENJ9_JAVA_OPTIONS; \
@@ -133,12 +133,12 @@ RUN set -eux; \
     dumb-init; \
     cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime; \
     echo "Asia/Shanghai" > /etc/timezone; \
-    dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
-    wget -q -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
-    chmod +x /usr/local/bin/gosu; \
-    ln -s /usr/local/bin/gosu /usr/bin/gosu; \
+#     dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
+#     wget -q -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
+#     chmod +x /usr/local/bin/gosu; \
+#     ln -s /usr/local/bin/gosu /usr/bin/gosu; \
     ln -s /usr/glibc-compat/bin/locale /usr/bin/locale ; \
-    gosu nobody true; \
+#     gosu nobody true; \
     apk del tzdata dpkg; \
     rm -rf /tmp/*.apk /tmp/gcc /tmp/gcc-libs.tar* /tmp/libz /tmp/libz.tar.xz /var/cache/apk/*; \
     # /dev/urandom is used as random source, which is perfectly safe
